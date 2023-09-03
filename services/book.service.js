@@ -2,7 +2,7 @@ import { utilService } from './util.service.js'
 import { storageService } from './async-storage.service.js'
 
 const BOOK_KEY = 'bookDB'
-var gFilterBy = {txt: '', minSpeed: 0}
+
 _createBooks()
 
 export const bookService = {
@@ -12,20 +12,19 @@ export const bookService = {
     save,
     getEmptyBook,
     getNextBookId,
-    // getFilterBy,
-    // setFilterBy,
-// getDefaultFilter
+    getDefaultFilter,
+    setFilterBy
 }
 
-function query() {
+function query(filterBy={}) {
     return storageService.query(BOOK_KEY)
         .then(books => {
-            if (gFilterBy.txt) {
-                const regex = new RegExp(gFilterBy.txt, 'i')
-                books = books.filter(book => regex.test(book.vendor))
+            if (filterBy.txt) {
+                const regex = new RegExp(filterBy.txt, 'i')
+                books = books.filter(book => regex.test(book.title))
             }
-            if (gFilterBy.minSpeed) {
-                books = books.filter(book => book.maxSpeed >= gFilterBy.minSpeed)
+            if (filterBy.listPrice) {
+                books = books.filter(book => book.listPrice['amount'] >= filterBy.listPrice)
             }
             return books
         })
@@ -47,23 +46,23 @@ function save(book) {
     }
 }
 
-function getEmptyBook(id ='',title = '', listPrice) {
+function getEmptyBook(id = '', title = '', listPrice) {
     return { id, title, listPrice }
 }
 
-function getFilterBy() {
-    return {...gFilterBy}
+// function getFilterBy() {
+//     return { ...gFilterBy }
+// }
+
+function getDefaultFilter() {
+    return { txt: '', listPrice: '' }
 }
 
-// function getDefaultFilter() {
-//     return { txt: '', minSpeed: '' }
-// }
-
-// function setFilterBy(filterBy = {}) {
-//      if (filterBy.txt !== undefined) gFilterBy.txt = filterBy.txt
-//     if (filterBy.listPrice !== undefined) gFilterBy.listPrice = filterBy.listPrice
-//     return gFilterBy
-// }
+function setFilterBy(filterBy = {}) {
+    if (filterBy.txt !== undefined) gFilterBy.txt = filterBy.txt
+   if (filterBy.listPrice !== undefined) gFilterBy.listPrice = filterBy.listPrice
+   return gFilterBy
+}
 
 function getNextBookId(bookID) {
     return storageService.query(BOOK_KEY)
@@ -78,32 +77,32 @@ function _createBooks() {
     let books = utilService.loadFromStorage(BOOK_KEY)
     if (!books || !books.length) {
         books = []
-        books.push(_createBook('OXeMG8wNskc','metus hendrerit', {
+        books.push(_createBook('OXeMG8wNskc', 'metus hendrerit', {
             "amount": 109,
             "currencyCode": "EUR",
             "isOnSale": false
-          }))
-        books.push(_createBook('JYOJa2NpSCq','morbi', {
+        }))
+        books.push(_createBook('JYOJa2NpSCq', 'morbi', {
             "amount": 44,
             "currencyCode": "EUR",
             "isOnSale": true
-          }))
-        books.push(_createBook('1y0Oqts35DQ','at viverra venenatis', {
+        }))
+        books.push(_createBook('1y0Oqts35DQ', 'at viverra venenatis', {
             "amount": 108,
             "currencyCode": "ILS",
             "isOnSale": false
-          }))
-        books.push(_createBook('kSnfIJyikTP','dictum', {
+        }))
+        books.push(_createBook('kSnfIJyikTP', 'dictum', {
             "amount": 30,
             "currencyCode": "EUR",
             "isOnSale": true
-          }))
+        }))
         utilService.saveToStorage(BOOK_KEY, books)
     }
 }
 
 function _createBook(id, title, listPrice) {
-    const book = getEmptyBook(id, title,listPrice)
+    const book = getEmptyBook(id, title, listPrice)
     // book.id = utilService.makeId()
     return book
 }

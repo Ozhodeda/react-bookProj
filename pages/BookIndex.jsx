@@ -8,13 +8,13 @@ const { useState, useEffect } = React
 export function BookIndex() {
     const [books, setBooks] = useState(null)
     const [selectedBookId, setSelectedBookId] = useState(null)
-    // const [filterBy, setFilterBy] = useState(carService.getDefaultFilter())
+    const [filterBy, setFilterBy] = useState(bookService.getDefaultFilter())
 
     useEffect(() => {
         console.log('mount')
-        // bookService.query(filterBy).then(books => setBooks(books))
-        bookService.query().then(setBooks)
-    }, [])
+        bookService.query(filterBy).then(books => setBooks(books))
+// bookService.query().then(setBooks)
+    }, [filterBy])
 
     function onRemoveBook(bookId) {
         bookService.remove(bookId).then(() => {
@@ -26,17 +26,20 @@ export function BookIndex() {
         setSelectedBookId(bookId)
     }
 
-    // function onSetFilterBy(filterBy) {
-    //     console.log('filterBy:', filterBy)
-    //     setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
-    // }
+    function onSetFilterBy(filterBy) {
+        console.log('filterBy:', filterBy)
+        setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
+    }
 
     console.log('render')
     if (!books) return <div>Loading...</div>
     return (
         <section className="book-index">
             {!selectedBookId &&
-                <BookList books={books} onRemoveBook={onRemoveBook} onSelectBookId={onSelectBookId} />
+                <React.Fragment>
+                    <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />
+                    <BookList books={books} onRemoveBook={onRemoveBook} onSelectBookId={onSelectBookId} />
+                </React.Fragment>
             }
 
             {selectedBookId && <BookDetails onBack={() => onSelectBookId(null)} bookId={selectedBookId} />}

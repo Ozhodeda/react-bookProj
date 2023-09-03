@@ -1,6 +1,6 @@
 const { useState, useEffect } = React
 
-export function CarFilter({ filterBy, onSetFilterBy }) {
+export function BookFilter({ filterBy, onSetFilterBy }) {
     const [filterByToEdit, setFilterByToEdit] = useState(filterBy)
 
     useEffect(() => {
@@ -41,7 +41,7 @@ export function CarFilter({ filterBy, onSetFilterBy }) {
                 <label htmlFor="txt">Title: </label>
                 <input value={txt} onChange={handleChange} type="text" placeholder="By Title" id="txt" name="txt" />
 
-                <label htmlFor="listPrice">listPrice: </label>
+                <label htmlFor="listPrice">Price: </label>
                 <input value={listPrice} onChange={handleChange} type="number" placeholder="By Min Price" id="listPrice" name="listPrice" />
 
                 <button>Set Filter</button>
