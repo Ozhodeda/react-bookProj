@@ -39,13 +39,13 @@ export function BookDetails({ bookId, onBack }) {
     }
 
     function getPriceColor(book) {
-        if (book.listPrice['amount'] > 100) return 'red'
-        if (book.listPrice['amount'] < 20) return 'green'
+        if (book.listPrice.amount > 100) return 'red'
+        if (book.listPrice.amount < 20) return 'green'
         else return ''
     }
 
     function onSale(book){
-        if(book.listPrice['isOnSale']) return 'On Sale'
+        if(book.listPrice.isOnSale) return 'On Sale'
     }
   
         if (!book) return <div>Loading...</div>
@@ -59,7 +59,7 @@ export function BookDetails({ bookId, onBack }) {
                 <h4>Page Count: {book.pageCount}</h4>
                 <h4>Read Level: {pageCount(book)}</h4>
                 <h4>Book Category: {book.categories.join(', ')}</h4>
-                <h4 className={getPriceColor(book)}>Book Price: {book.listPrice['amount']}</h4>
+                <h4 className={getPriceColor(book)}>Book Price: {book.listPrice.amount}</h4>
                 <h4>Discount: {onSale(book)}</h4>
                 <h4>Book language: {book.language}</h4>
                 <div>Book Description :<LongTxt txt={book.description}/></div>
