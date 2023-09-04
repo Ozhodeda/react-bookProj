@@ -59,9 +59,9 @@ function getDefaultFilter() {
 }
 
 function setFilterBy(filterBy = {}) {
-    if (filterBy.txt !== undefined) gFilterBy.txt = filterBy.txt
-   if (filterBy.listPrice !== undefined) gFilterBy.listPrice = filterBy.listPrice
-   return gFilterBy
+    if (filterBy.txt !== undefined) filterBy.txt = filterBy.txt
+   if (filterBy.listPrice !== undefined) filterBy.listPrice = filterBy.listPrice
+   return filterBy
 }
 
 function getNextBookId(bookID) {

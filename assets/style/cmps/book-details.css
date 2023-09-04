@@ -5,3 +5,9 @@ h4.red {
 h4.green {
     color: green;
 }
+
+.book-details {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+  }
