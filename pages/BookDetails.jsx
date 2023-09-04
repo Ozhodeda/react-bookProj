@@ -2,14 +2,32 @@ import { bookService } from "../services/book.service.js"
 import { LongTxt } from "../cmps/LongTxt.jsx"
 
 const { useState, useEffect } = React
+const { useParams, useNavigate, Link } = ReactRouterDOM
 
 export function BookDetails({ bookId, onBack }) {
 
     const [book, setBook] = useState(null)
+    const params = useParams()
+    const navigate = useNavigate()
+
 
     useEffect(() => {
-        bookService.get(bookId).then(setBook)
-    }, [])
+        loadRobot()
+    }, [params.bookId])
+
+    function loadRobot() {
+        bookService.get(params.bookId)
+            .then(setBook)
+            .catch(err => {
+                console.log('err:', err)
+                navigate('/book')
+            })
+    }
+
+    function onBack() {
+        navigate('/book')
+        // navigate(-1)
+    }
     function pageCount(book) {
         if (book.pageCount > 500) return 'Serious Reading'
         if (book.pageCount > 200) return 'Descent Reading'
@@ -44,7 +62,7 @@ export function BookDetails({ bookId, onBack }) {
                 <h4 className={getPriceColor(book)}>Book Price: {book.listPrice['amount']}</h4>
                 <h4>Discount: {onSale(book)}</h4>
                 <h4>Book language: {book.language}</h4>
-                <p>Book Description :<LongTxt txt={book.description}/></p>
+                <div>Book Description :<LongTxt txt={book.description}/></div>
                 <button onClick={onBack}>Back</button>
             </section>
         )
