@@ -78,7 +78,7 @@ export function BookDetails({ onBack }) {
         if (book.listPrice.isOnSale) return 'On Sale'
     }
 
-    if (!book) return <div>Loading...</div>
+    if (!book) return <div className='loader-container'> <div className="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
     return (
         <section className="book-details">
             <h2>Book Title: {book.title}</h2>

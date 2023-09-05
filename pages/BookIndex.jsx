@@ -1,7 +1,7 @@
 import { BookList } from "../cmps/BookList.jsx"
 import { BookFilter } from "../cmps/BookFilter.jsx"
 import { bookService } from "../services/book.service.js"
-import {showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
+import { showErrorMsg, showSuccessMsg } from '../services/event-bus.service.js'
 
 const { useState, useEffect } = React
 const { Link } = ReactRouterDOM
@@ -13,8 +13,8 @@ export function BookIndex() {
     useEffect(() => {
         console.log('mount')
         bookService.query(filterBy).then(books => setBooks(books))
-       // bookService.query().then(setBooks)
-        .catch(err => console.log('err:', err))
+            // bookService.query().then(setBooks)
+            .catch(err => console.log('err:', err))
     }, [filterBy])
 
     function onRemoveBook(bookId) {
@@ -30,12 +30,13 @@ export function BookIndex() {
 
 
     function onSetFilterBy(filterBy) {
-       // console.log('filterBy:', filterBy)
+        // console.log('filterBy:', filterBy)
         setFilterBy(prevFilter => ({ ...prevFilter, ...filterBy }))
     }
 
     console.log('render')
-    if (!books) return <div>Loading...</div>
+    if (!books) return <div className='loader-container'> <div className="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div></div>
+    
     return (
         <section className="book-index">
             <BookFilter filterBy={filterBy} onSetFilterBy={onSetFilterBy} />

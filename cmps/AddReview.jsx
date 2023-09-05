@@ -1,39 +1,66 @@
 import { bookService } from '../services/book.service.js'
+import { RateRange } from "./RateRange.jsx"
+import { RateStars } from "./RateStars.jsx"
+import { RateSelect } from "./RateSelect.jsx"
 
-const { useState} = React
+const { useState } = React
 
-export function AddReview({onAddReview}) {
+export function AddReview({ onAddReview }) {
 
     const [isHide, setReviewForm] = useState(true)
     const [review, setReview] = useState(bookService.getEmptyReview())
-
+    const [cmpType, setCmpType] = useState('Hello')
 
     function handleChange({ target }) {
         const field = target.name
         let value = target.value
+
         switch (target.type) {
             case 'number':
             case 'range':
                 value = +value || ''
                 break;
+
             case 'checkbox':
                 value = target.checked
                 break
+            case 'select':
+                value = target.selection
+                break
+
             default:
                 break;
         }
+
         setReview(prevReview => ({ ...prevReview, [field]: value }))
     }
+
 
     function onSubmitReview(ev) {
         ev.preventDefault()
         onAddReview(review)
     }
 
+    function DynamicCmp(props) {
+        console.log(props);
 
-    const { fullname, rating, readAt } = review
+        console.log(cmpType);
+        switch (cmpType) {
 
-//  console.log('review:', review)
+            case 'By Stars':
+                return <RateStars {...props} />
+            case 'By Range':
+                console.log('hi');
+                return <RateRange {...props} />
+            case 'By Select Option':
+                return <RateSelect {...props} />
+        }
+    }
+
+
+    const { fullname, rating,comment, readAt } = review
+
+    //  console.log('review:', review)
 
     const dynClass = isHide ? 'hide' : ''
 
@@ -45,13 +72,20 @@ export function AddReview({onAddReview}) {
                 <label htmlFor="fullname">Full Name: </label>
                 <input onChange={handleChange} value={fullname} type="text" name="fullname" id="fullname" />
 
-                <label htmlFor="rating">Rating: </label>
-                <input onChange={handleChange} value={rating} type="range" name="rating" min="0" max="5" id="rating" />
+                <div>
+                    <select onChange={ev => setCmpType(ev.target.value)} >
+                        <option value="">Select Rating</option>
+                        <option>By Stars</option>
+                        <option>By Range</option>
+                        <option>By Select Option</option>
+                    </select>
+                    <DynamicCmp handleChange={handleChange} review={review} />
+                </div>
 
                 <label htmlFor="readAt">Date: </label>
                 <input onChange={handleChange} value={readAt} type="date" name="readAt" id="readAt" />
 
-                <button>Save</button>
+                <button onClick={() => setReviewForm(isHide)}>Save</button>
             </form>
         </section >
     )

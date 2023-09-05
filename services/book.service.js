@@ -70,9 +70,11 @@ function getEmptyReview() {
     id: utilService.makeId(),
     fullname: '',
     rating: '',
+    comment: '',
     readAt: '',
   }
 }
+
 function addReview(bookId, review) {
   return get(bookId)
     .then(book => {

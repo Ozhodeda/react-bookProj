@@ -7,8 +7,8 @@ export function AboutUs(){
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quisquam, quod, quaerat, quasi, quidem, quibusdam, quod, quaerat, quasi.</p>
 
             <nav>
-                <Link to="/about/team">Team</Link>
-                <Link to="/about/goal">Goal</Link>
+                <Link  to="/about/team"><h2>Team</h2></Link>
+                <Link to="/about/goal"><h2>Goal</h2></Link>
             </nav>
 
             <section>
