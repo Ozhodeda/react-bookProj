@@ -1,16 +1,11 @@
 import { bookService } from '../services/book.service.js'
 
+const { useState} = React
 
-
-const { useState } = React
-const { useNavigate, useParams } = ReactRouterDOM
-
-export function AddReview() {
+export function AddReview({onAddReview}) {
 
     const [isHide, setReviewForm] = useState(true)
     const [review, setReview] = useState(bookService.getEmptyReview())
-    const navigate = useNavigate()
-    const params = useParams()
 
 
     function handleChange({ target }) {
@@ -32,13 +27,13 @@ export function AddReview() {
 
     function onSubmitReview(ev) {
         ev.preventDefault()
-     
+        onAddReview(review)
     }
 
 
     const { fullname, rating, readAt } = review
 
-    // console.log('review:', review)
+//  console.log('review:', review)
 
     const dynClass = isHide ? 'hide' : ''
 
@@ -51,7 +46,7 @@ export function AddReview() {
                 <input onChange={handleChange} value={fullname} type="text" name="fullname" id="fullname" />
 
                 <label htmlFor="rating">Rating: </label>
-                <input onChange={handleChange} value={rating} type="range" name="rating" form="1" to="5" id="rating" />
+                <input onChange={handleChange} value={rating} type="range" name="rating" min="0" max="5" id="rating" />
 
                 <label htmlFor="readAt">Date: </label>
                 <input onChange={handleChange} value={readAt} type="date" name="readAt" id="readAt" />
